@@ -110,7 +110,7 @@ class Player{
         this.gameboard = Gameboard();
     }
 
-    getGameBoard(){
+    getGameboard(){
         return this.gameboard;
     }
 
@@ -134,4 +134,33 @@ class AIPlayer extends Player{
             const randomCol = parseInt(Math.random() * 10);
         }while(!opponent.receiveAttack(randomRow, randomCol));
     }
+}
+
+function game(){
+    const player = new Player();
+    const opponent = new AIPlayer();
+    populatePlayerCells(player);
+    //playerPlacementStage(player, opponent);
+}
+
+function populatePlayerCells(player){
+    const playerGrid = document.querySelector("#you>.grid");
+    playerGrid.innerHTML = "";
+    const board = player.getGameboard();
+    for(let row = 0; row < 10; row++){
+        for(let col = 0; col < 10; col++){
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
+            playerGrid.appendChild(cell);
+        }
+    }
+}
+
+function playerPlacementStage(){
+    const shipList = [Ship(4), Ship(3), Ship(2)];
+
+    while(shipList.length !== 0){
+
+    }
+    return;
 }

@@ -17,3 +17,14 @@
     grid-template-rows: repeat(10, 1fr);
     gap: 3px;
 }
+
+.cell{
+    background-color: white;
+    display: grid;
+    place-items: center;
+    text-align: center;
+}
+
+.ship-cell{
+    background-color: blue;
+}
