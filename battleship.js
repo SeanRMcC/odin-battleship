@@ -146,7 +146,7 @@ function game(){
 }
 
 function AIPlacement(opponent){
-    const ships = [Ship(5), Ship(4), Ship(3)];
+    const ships = [Ship(5), Ship(4), Ship(3), Ship(3), Ship(2), Ship(2), Ship(2)];
     const directions = ["vertical", "horizontal"];
     const board = opponent.getGameboard();
     while(ships.length !== 0){
@@ -217,8 +217,11 @@ function populateAIGrid(opponent){
 }
 
 function playerPlacementStage(player, opponent){
-    const ships = [Ship(5), Ship(4), Ship(3)];
+    const ships = [Ship(5), Ship(4), Ship(3), Ship(3), Ship(2), Ship(2), Ship(2)];
     const board = player.getGameboard();
+    const textInput = document.querySelector("#direction");
+    const currPlacement = document.querySelector("h3");
+    currPlacement.textContent = `Place ship of length ${ships[0].getLength()}`
     function singularPlacement(){
         const cells = document.querySelectorAll("#you>.grid>.cell");
         cells.forEach(cell => {
@@ -229,8 +232,8 @@ function playerPlacementStage(player, opponent){
     function cellListener(){
         const r = parseInt(this.dataset.row);
         const c = parseInt(this.dataset.col);
-        if(board.isValidPlacement(r, c, ships[0], "vertical")){
-            board.placeShip(r, c, ships[0], "vertical");
+        if(board.isValidPlacement(r, c, ships[0], textInput.value.toLowerCase())){
+            board.placeShip(r, c, ships[0], textInput.value.toLowerCase());
             ships.shift();
             populatePlayerCells(player);
             singularPlacement();
@@ -241,6 +244,8 @@ function playerPlacementStage(player, opponent){
             console.log("done");
             populatePlayerCells(player);
             playMainGame(player, opponent);
+        }else{
+            currPlacement.textContent = `Place ship of length ${ships[0].getLength()}`;
         }
     }
     singularPlacement();
