@@ -115,7 +115,7 @@ class Player{
     }
 
     playTurn(row, col, opponent){
-        opponent.getGameBoard().receiveAttack(row, col);
+        opponent.getGameboard().receiveAttack(row, col);
     }
 
     win(opponent){
@@ -140,7 +140,26 @@ function game(){
     const player = new Player();
     const opponent = new AIPlayer();
     populatePlayerCells(player);
+    populateAIGrid(opponent);
+    AIPlacement(opponent);
     playerPlacementStage(player, opponent);
+}
+
+function AIPlacement(opponent){
+    const ships = [Ship(5), Ship(4), Ship(3)];
+    const directions = ["vertical", "horizontal"];
+    const board = opponent.getGameboard();
+    while(ships.length !== 0){
+        currShip = ships[0];
+        const randomRow = parseInt(Math.random() * 10);
+        const randomCol = parseInt(Math.random() * 10);
+        const randomDirection = directions[parseInt(Math.random() * 2)];
+        if(board.isValidPlacement(randomRow, randomCol, currShip, randomDirection)){
+            board.placeShip(randomRow, randomCol, currShip, randomDirection);
+            ships.shift();
+        }
+    }
+    populateAIGrid(opponent);
 }
 
 function populatePlayerCells(player){
@@ -170,30 +189,66 @@ function populatePlayerCells(player){
     }
 }
 
+function populateAIGrid(opponent){
+    const opponentGrid = document.querySelector("#opponent>.grid");
+    opponentGrid.innerHTML = "";
+    const board = opponent.getGameboard();
+    for(let row = 0; row < 10; row++){
+        for(let col = 0; col < 10; col++){
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
+            cell.dataset.row = row;
+            cell.dataset.col = col;
+            const position = board.board[row][col];
+            if(position.getShip()){
+                cell.classList.add("ship-cell");
+                if(position.getShip().isSunk()){
+                    cell.classList.add("sunk-ship-cell");
+                }
+            }
+            if(position.hasBeenChosen() && position.getShip()){
+                cell.textContent = "💥";
+            }else if(position.hasBeenChosen()){
+                cell.textContent = "~"
+            }
+            opponentGrid.appendChild(cell);
+        }
+    }
+}
+
 function playerPlacementStage(player, opponent){
     const ships = [Ship(5), Ship(4), Ship(3)];
-    const cells = document.querySelectorAll("#you>.grid>.cell");
     const board = player.getGameboard();
-    cells.forEach(cell => {
-        cell.addEventListener("click", () => {
-            const r = parseInt(cell.dataset.row);
-            const c = parseInt(cell.dataset.col);
-            if(board.isValidPlacement(r, c, ships[0], "vertical")){
-                board.placeShip(r, c, ships[0], "vertical");
-                ships.shift();
-            }else{
-                console.log("Incorrect")
-            }
-            if(ships.length === 0){
-                console.log("done");
-                populatePlayerCells(player);
-                playMainGame(player, opponent);
-            }
-        });
+    function singularPlacement(){
+        const cells = document.querySelectorAll("#you>.grid>.cell");
+        cells.forEach(cell => {
+            cell.addEventListener("click", cellListener.bind(cell));
         
-    });
+        });
+    }
+    function cellListener(){
+        const r = parseInt(this.dataset.row);
+        const c = parseInt(this.dataset.col);
+        if(board.isValidPlacement(r, c, ships[0], "vertical")){
+            board.placeShip(r, c, ships[0], "vertical");
+            ships.shift();
+            populatePlayerCells(player);
+            singularPlacement();
+        }else{
+            console.log("Incorrect")
+        }
+        if(ships.length === 0){
+            console.log("done");
+            populatePlayerCells(player);
+            playMainGame(player, opponent);
+        }
+    }
+    singularPlacement();
+        
 }
 
 function playMainGame(player, opponent){
-
+    console.log("reached main game");
 }
+
+game();
