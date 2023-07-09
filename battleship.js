@@ -104,3 +104,34 @@ function Gameboard(){
 
     return {board, placeShip, isValidPlacement, receiveAttack, allShipsDown};
 }
+
+class Player{
+    constructor(){
+        this.gameboard = Gameboard();
+    }
+
+    getGameBoard(){
+        return this.gameboard;
+    }
+
+    playTurn(row, col, opponent){
+        opponent.getGameBoard().receiveAttack(row, col);
+    }
+
+    win(opponent){
+        return opponent.allShipsDown();
+    }
+}
+
+class AIPlayer extends Player{
+    constructor(){
+        super();
+    }
+
+    playTurn(opponent){
+        do{
+            const randomRow = parseInt(Math.random() * 10);
+            const randomCol = parseInt(Math.random() * 10);
+        }while(!opponent.receiveAttack(randomRow, randomCol));
+    }
+}
