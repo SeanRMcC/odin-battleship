@@ -129,10 +129,12 @@ class AIPlayer extends Player{
     }
 
     playTurn(opponent){
+        let randomRow;
+        let randomCol;
         do{
-            const randomRow = parseInt(Math.random() * 10);
-            const randomCol = parseInt(Math.random() * 10);
-        }while(!opponent.receiveAttack(randomRow, randomCol));
+            randomRow = parseInt(Math.random() * 10);
+            randomCol = parseInt(Math.random() * 10);
+        }while(!opponent.getGameboard().receiveAttack(randomRow, randomCol));
     }
 }
 
@@ -259,9 +261,13 @@ function playMainGame(player, opponent){
         });
     }
     function playerAttack(){
-        const row = this.dataset.row;
-        const col = this.dataset.col;
+        const row = parseInt(this.dataset.row);
+        const col = parseInt(this.dataset.col);
         if(player.playTurn(row, col, opponent)){
+            if(!opponent.getGameboard().board[row][col].getShip()){
+                opponent.playTurn(player);
+                populatePlayerCells(player);
+            }
             populateAIGrid(opponent);
             singularRound();
         }
