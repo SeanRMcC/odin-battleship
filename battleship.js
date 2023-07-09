@@ -140,7 +140,7 @@ function game(){
     const player = new Player();
     const opponent = new AIPlayer();
     populatePlayerCells(player);
-    //playerPlacementStage(player, opponent);
+    playerPlacementStage(player, opponent);
 }
 
 function populatePlayerCells(player){
@@ -170,11 +170,30 @@ function populatePlayerCells(player){
     }
 }
 
-function playerPlacementStage(){
-    const shipList = [Ship(4), Ship(3), Ship(2)];
+function playerPlacementStage(player, opponent){
+    const ships = [Ship(5), Ship(4), Ship(3)];
+    const cells = document.querySelectorAll("#you>.grid>.cell");
+    const board = player.getGameboard();
+    cells.forEach(cell => {
+        cell.addEventListener("click", () => {
+            const r = parseInt(cell.dataset.row);
+            const c = parseInt(cell.dataset.col);
+            if(board.isValidPlacement(r, c, ships[0], "vertical")){
+                board.placeShip(r, c, ships[0], "vertical");
+                ships.shift();
+            }else{
+                console.log("Incorrect")
+            }
+            if(ships.length === 0){
+                console.log("done");
+                populatePlayerCells(player);
+                playMainGame(player, opponent);
+            }
+        });
+        
+    });
+}
 
-    while(shipList.length !== 0){
+function playMainGame(player, opponent){
 
-    }
-    return;
 }
