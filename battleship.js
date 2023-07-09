@@ -204,7 +204,6 @@ function populateAIGrid(opponent){
             cell.dataset.col = col;
             const position = board.board[row][col];
             if(position.getShip()){
-                cell.classList.add("ship-cell");
                 if(position.getShip().isSunk()){
                     cell.classList.add("sunk-ship-cell");
                 }
