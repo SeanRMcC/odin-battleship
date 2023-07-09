@@ -119,7 +119,7 @@ class Player{
     }
 
     win(opponent){
-        return opponent.allShipsDown();
+        return opponent.getGameboard().allShipsDown();
     }
 }
 
@@ -135,6 +135,7 @@ class AIPlayer extends Player{
             randomRow = parseInt(Math.random() * 10);
             randomCol = parseInt(Math.random() * 10);
         }while(!opponent.getGameboard().receiveAttack(randomRow, randomCol));
+        return !!opponent.getGameboard().board[randomRow][randomCol].getShip();
     }
 }
 
@@ -264,8 +265,15 @@ function playMainGame(player, opponent){
         const row = parseInt(this.dataset.row);
         const col = parseInt(this.dataset.col);
         if(player.playTurn(row, col, opponent)){
+            if(player.win(opponent)){
+                winner("Player");
+            }
             if(!opponent.getGameboard().board[row][col].getShip()){
-                opponent.playTurn(player);
+                while(opponent.playTurn(player)){
+                    if(opponent.win(player)){
+                        winner("Evil Robot");
+                    }
+                };
                 populatePlayerCells(player);
             }
             populateAIGrid(opponent);
@@ -273,6 +281,10 @@ function playMainGame(player, opponent){
         }
     }
     singularRound();
+}
+
+function winner(winner){
+    alert(`The winner is: ${winner}!`);
 }
 
 game();

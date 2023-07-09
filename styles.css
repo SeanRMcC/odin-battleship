@@ -4,7 +4,9 @@
 }
 
 .mid-section{
+    box-sizing: border-box;
     width: 20vw;
+    padding: 25px;
 }
 
 .grid{
