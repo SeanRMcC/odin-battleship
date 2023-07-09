@@ -23,8 +23,13 @@
     display: grid;
     place-items: center;
     text-align: center;
+    font-size: 2.5rem;
 }
 
 .ship-cell{
     background-color: blue;
+}
+
+.sunk-ship-cell{
+    background-color: red;
 }

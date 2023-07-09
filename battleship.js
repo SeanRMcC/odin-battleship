@@ -153,8 +153,17 @@ function populatePlayerCells(player){
             cell.classList.add("cell");
             cell.dataset.row = row;
             cell.dataset.col = col;
-            if(board.board[row][col].getShip()){
+            const position = board.board[row][col];
+            if(position.getShip()){
                 cell.classList.add("ship-cell");
+                if(position.getShip().isSunk()){
+                    cell.classList.add("sunk-ship-cell");
+                }
+            }
+            if(position.hasBeenChosen() && position.getShip()){
+                cell.textContent = "💥";
+            }else if(position.hasBeenChosen()){
+                cell.textContent = "~"
             }
             playerGrid.appendChild(cell);
         }
