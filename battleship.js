@@ -91,7 +91,11 @@ function Gameboard(){
 
     function receiveAttack(row, col){
         const cell = board[row][col];
+        if(cell.hasBeenChosen()){
+            return false;
+        }
         cell.select();
+        return true;
     }
 
     function allShipsDown(){
