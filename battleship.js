@@ -151,6 +151,11 @@ function populatePlayerCells(player){
         for(let col = 0; col < 10; col++){
             const cell = document.createElement("div");
             cell.classList.add("cell");
+            cell.dataset.row = row;
+            cell.dataset.col = col;
+            if(board.board[row][col].getShip()){
+                cell.classList.add("ship-cell");
+            }
             playerGrid.appendChild(cell);
         }
     }
