@@ -23,7 +23,7 @@
     display: grid;
     place-items: center;
     text-align: center;
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
 .ship-cell{

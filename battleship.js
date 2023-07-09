@@ -115,7 +115,7 @@ class Player{
     }
 
     playTurn(row, col, opponent){
-        opponent.getGameboard().receiveAttack(row, col);
+        return opponent.getGameboard().receiveAttack(row, col);
     }
 
     win(opponent){
@@ -241,7 +241,6 @@ function playerPlacementStage(player, opponent){
             console.log("Incorrect")
         }
         if(ships.length === 0){
-            console.log("done");
             populatePlayerCells(player);
             playMainGame(player, opponent);
         }else{
@@ -253,7 +252,21 @@ function playerPlacementStage(player, opponent){
 }
 
 function playMainGame(player, opponent){
-    console.log("reached main game");
+    function singularRound(){
+        const enemyCells = document.querySelectorAll("#opponent>.grid>.cell");
+        enemyCells.forEach(cell => {
+            cell.addEventListener("click", playerAttack.bind(cell));
+        });
+    }
+    function playerAttack(){
+        const row = this.dataset.row;
+        const col = this.dataset.col;
+        if(player.playTurn(row, col, opponent)){
+            populateAIGrid(opponent);
+            singularRound();
+        }
+    }
+    singularRound();
 }
 
 game();
