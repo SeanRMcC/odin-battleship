@@ -1,0 +1,19 @@
+.game{
+    display: flex;
+    justify-content: center;
+}
+
+.mid-section{
+    width: 20vw;
+}
+
+.grid{
+    width: 500px;
+    height: 500px;
+    background-color: black;
+    padding: 3px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 3px;
+}
